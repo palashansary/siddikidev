@@ -41,7 +41,7 @@ const About = React.forwardRef((props, ref) => {
                   and collaborate with like-minded professionals to deliver
                   engaging and exceptional digital experiences. Let's embark on
                   this exciting journey together, turning ideas into captivating
-                  realities! 2025
+                  realities!
                 </p>
               </div>
             </div>
