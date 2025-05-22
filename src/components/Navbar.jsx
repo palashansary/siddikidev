@@ -9,6 +9,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 import { AiOutlineClose } from "react-icons/ai";
 import siddiki_frontend_dev from "../cv/siddiki_frontend_dev.pdf";
+import siddiki_react_latest from "../cv/siddiki_react_dev.pdf"
 
 const Navbar = ({ onClickScroll }) => {
   const location = useLocation();
@@ -29,7 +30,7 @@ const Navbar = ({ onClickScroll }) => {
   const cvDownloadHandler = () => {
     console.log("clicked");
     const link = document.createElement("a");
-    link.href = siddiki_frontend_dev;
+    link.href = siddiki_react_latest;
     link.download = "siddiki_frontend_dev.pdf";
     link.click();
   };
