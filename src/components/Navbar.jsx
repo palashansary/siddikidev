@@ -82,15 +82,14 @@ const Navbar = ({ onClickScroll }) => {
 
           <div className="flex flex-row h-14 justify-center items-center">
             {/* CV ICONS STARTS */}
-            <div
+            <Link to="/resume"
               className="flex gap-2 items-center cursor-pointer  sm:border h-9 sm:px-2 sm:py-0 sm:rounded-lg sm:bg-black/[0.6] pr-6 sm:pr-2  sm:hover:scale-95 duration-300 "
-              onClick={cvDownloadHandler}
             >
               <img src={cv} className=" h-6 md:h-5 " />
-              <p className="font-robotomono text-[14px] font-semibold hidden sm:block">
+              <div className="font-robotomono text-[14px] font-semibold hidden sm:block">
                 Resume
-              </p>
-            </div>
+              </div>
+            </Link>
 
             {/* CV ICONS ENDS  */}
 
