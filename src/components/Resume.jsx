@@ -8,7 +8,7 @@ const Resume = () => {
 
             <div className="w-full max-w-5xl flex justify-center px-2">
                 <iframe
-                    src={myResume}
+                    src={`https://docs.google.com/gview?url=https://siddikiansary.web.app/cv/siddiki_react_dev.pdf&embedded=true`}
                     title="Resume Preview"
                     className="w-full h-[75vh] rounded-lg border border-gray-700 bg-gray-800"
                 ></iframe>
