@@ -5,6 +5,11 @@ import { REMOTE_CONTENT_ENABLED } from "../config/app";
 
 const CACHE_KEY = "ahsa:content:v1";
 
+// Kick off the request at module load, in parallel with React's first
+// render, so skeletons (first visit) clear as early as possible.
+let earlyRequest = REMOTE_CONTENT_ENABLED ? fetchDatabase("content") : null;
+earlyRequest?.catch(() => {}); // handled in the effect; avoid an unhandled rejection
+
 // Browser storage can throw (private mode, blocked cookies), so every access
 // is guarded — the cache is a nicety, never a requirement.
 function readCache() {
@@ -44,7 +49,10 @@ const ContentProvider = ({ children }) => {
   useEffect(() => {
     if (!REMOTE_CONTENT_ENABLED) return;
     let active = true;
-    fetchDatabase("content")
+    // Use the early request once; later mounts (e.g. StrictMode) refetch.
+    const request = earlyRequest || fetchDatabase("content");
+    earlyRequest = null;
+    request
       .then((remote) => {
         if (!active) return;
         if (remote === null) {

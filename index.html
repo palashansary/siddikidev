@@ -20,10 +20,35 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://siddikiansary-default-rtdb.firebaseio.com" crossorigin />
+    <!-- Preload the hero image on the home page only, so it downloads in
+         parallel with the JavaScript (same srcset/sizes as the <img>). -->
+    <script>
+      if (location.pathname === "/") {
+        var hero = document.createElement("link");
+        hero.rel = "preload";
+        hero.as = "image";
+        hero.href = "/images/hero.webp";
+        hero.setAttribute("imagesrcset", "/images/hero-768.webp 768w, /images/hero.webp 1024w");
+        hero.setAttribute("imagesizes", "(min-width: 768px) 50vw, 100vw");
+        hero.setAttribute("fetchpriority", "high");
+        document.head.appendChild(hero);
+      }
+    </script>
+    <!-- Fonts load without blocking the first paint (text shows in a
+         fallback font for a moment, then swaps). Only the weights the site
+         uses are requested, so bold text is real bold, not browser-faked. -->
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz@10..48&family=Open+Sans&family=Roboto&family=Roboto+Mono:wght@300&family=Spectral&display=swap"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Open+Sans:wght@400;600&family=Roboto:wght@400;700&family=Roboto+Mono:wght@300;400;600&family=Spectral:wght@400;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Open+Sans:wght@400;600&family=Roboto:wght@400;700&family=Roboto+Mono:wght@300;400;600&family=Spectral:wght@400;700&display=swap"
+      />
+    </noscript>
   </head>
   <body>
     <div id="root"></div>

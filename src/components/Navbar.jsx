@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
+import { AnimatePresence, m, useScroll, useSpring } from "framer-motion";
 
 import newLogo from "../images/newlogo.webp";
 import cv from "../images/cv.webp";
@@ -38,7 +38,7 @@ const ScrollProgress = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 30, restDelta: 0.001 });
   return (
-    <motion.div
+    <m.div
       aria-hidden="true"
       style={{ scaleX }}
       className="absolute left-0 right-0 bottom-0 h-[2px] origin-left bg-gradient-to-r from-purple-700 via-fuchsia-600 to-rose-500"
@@ -100,7 +100,9 @@ const Navbar = ({ onClickScroll }) => {
             <img
               src={newLogo}
               alt="AHSA logo"
-              className="h-8 md:h-12 transition-transform duration-300 hover:scale-105"
+              width={610}
+              height={207}
+              className="h-8 md:h-12 w-auto transition-transform duration-300 hover:scale-105"
             />
           </Link>
         </div>
@@ -131,7 +133,7 @@ const Navbar = ({ onClickScroll }) => {
               aria-label="Resume"
               className="flex gap-2 items-center cursor-pointer  sm:border sm:border-white/25 h-9 sm:px-2 sm:py-0 sm:rounded-lg sm:bg-white/[0.06] sm:backdrop-blur-md sm:shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] pr-6 sm:pr-2  sm:hover:scale-95 sm:hover:bg-white/[0.1] duration-300 "
             >
-              <img src={cv} alt="" className=" h-6 md:h-5 " />
+              <img src={cv} alt="" width={96} height={96} className=" h-6 md:h-5 w-auto" />
               <div className="font-robotomono text-[14px] font-semibold hidden sm:block">
                 Resume
               </div>
@@ -145,7 +147,7 @@ const Navbar = ({ onClickScroll }) => {
               aria-expanded={activeMenu}
               onClick={() => setActiveMenu((open) => !open)}
             >
-              <motion.span
+              <m.span
                 key={activeMenu ? "close" : "open"}
                 initial={{ rotate: -90, opacity: 0 }}
                 animate={{ rotate: 0, opacity: 1 }}
@@ -157,7 +159,7 @@ const Navbar = ({ onClickScroll }) => {
                 ) : (
                   <GiHamburgerMenu size="1.6rem" />
                 )}
-              </motion.span>
+              </m.span>
             </button>
           </div>
         </div>
@@ -165,7 +167,7 @@ const Navbar = ({ onClickScroll }) => {
         {/* MOBILE NAVBAR STARTS */}
         <AnimatePresence>
           {activeMenu && (
-            <motion.div
+            <m.div
               key="mobile-menu"
               variants={menuVariants}
               initial="hidden"
@@ -175,7 +177,7 @@ const Navbar = ({ onClickScroll }) => {
             >
               <div className="flex flex-col items-center mt-10 gap-y-10">
                 <ul className="flex flex-col items-center gap-y-4 text-[1.5rem] font-semibold  font-bricolage">
-                  <motion.li variants={menuItemVariants}>
+                  <m.li variants={menuItemVariants}>
                     {isHome ? (
                       <button type="button" onClick={scrollToAbout}>
                         About
@@ -185,17 +187,17 @@ const Navbar = ({ onClickScroll }) => {
                         Home
                       </Link>
                     )}
-                  </motion.li>
+                  </m.li>
                   {navItems.map((item) => (
-                    <motion.li key={item.to} variants={menuItemVariants}>
+                    <m.li key={item.to} variants={menuItemVariants}>
                       <Link to={item.to} onClick={menuCloseHandler}>
                         {item.label}
                       </Link>
-                    </motion.li>
+                    </m.li>
                   ))}
                 </ul>
 
-                <motion.a
+                <m.a
                   variants={menuItemVariants}
                   href={resume.url}
                   download={resume.fileName || true}
@@ -205,9 +207,9 @@ const Navbar = ({ onClickScroll }) => {
                   className="glass-pill font-robotomono text-[1rem] px-3 py-1.5 rounded-lg"
                 >
                   Download CV
-                </motion.a>
+                </m.a>
               </div>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
         {/* MOBILE NAVBAR ENDS */}

@@ -11,7 +11,7 @@ const Initial = ({ name, className }) => (
 // wrapping row of fixed 120px / 150px tiles. Tiles size themselves in % below
 // `sm`, so they must sit inside this layout (or a fixed-width wrapper).
 export const skillGridClass =
-  "grid grid-cols-3 gap-3 w-full max-w-[420px] px-4 sm:flex sm:flex-wrap sm:max-w-none sm:w-auto sm:gap-6 md:gap-8 sm:justify-center md:justify-start sm:items-center md:w-[90%] md:px-0";
+  "grid grid-cols-3 gap-3 w-full max-w-[520px] px-5 sm:px-8 sm:flex sm:flex-wrap sm:max-w-none sm:w-auto sm:gap-6 md:gap-8 sm:justify-center md:justify-start sm:items-center md:w-[90%] md:px-0";
 
 const reducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;

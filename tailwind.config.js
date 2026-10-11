@@ -4,7 +4,34 @@ import typography from "@tailwindcss/typography";
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      // Looping decorative motion runs as CSS so it stays on the GPU and
+      // never costs JavaScript per frame.
+      keyframes: {
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(var(--float-distance, -12px))" },
+        },
+        drift: {
+          "0%, 100%": { transform: "translate3d(0, 0, 0)" },
+          "50%": { transform: "translate3d(40px, -30px, 0)" },
+        },
+        wheel: {
+          "0%, 100%": { transform: "translateY(0)", opacity: "1" },
+          "50%": { transform: "translateY(10px)", opacity: "0.2" },
+        },
+        "drift-reverse": {
+          "0%, 100%": { transform: "translate3d(0, 0, 0)" },
+          "50%": { transform: "translate3d(-50px, 30px, 0)" },
+        },
+      },
+      animation: {
+        float: "float 6s ease-in-out infinite",
+        drift: "drift 18s ease-in-out infinite",
+        wheel: "wheel 1.8s ease-in-out infinite",
+        "drift-reverse": "drift-reverse 22s ease-in-out infinite",
+      },
+    },
     screens: {
       xss: "380px",
       xs: "480px",

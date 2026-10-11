@@ -11,11 +11,11 @@ const ImagePlaceholder = ({ name }) => (
 
 const Card = ({ image, name, description, link }) => {
   return (
-    <div className="group">
-      <div className="h-[300px] w-[340px] max-w-[calc(100vw_-_2rem)] sm:h-[350px] sm:w-[440px] relative bg-gradient-to-r from-slate-700 to-slate-800 rounded-3xl z-0 border border-white/[0.06] ring-1 ring-white/0 transition duration-300 sm:group-hover:-translate-y-1.5 sm:group-hover:ring-blue-400/20 sm:group-hover:shadow-[0_24px_48px_-20px_rgba(59,130,246,0.45)]">
+    <div className="group w-full sm:w-auto text-left">
+      <div className="w-full pb-5 sm:pb-0 sm:h-[350px] sm:w-[440px] relative bg-gradient-to-r from-slate-700/80 to-slate-800/80 backdrop-blur-md rounded-3xl z-0 border border-white/[0.06] ring-1 ring-white/0 transition duration-300 sm:group-hover:-translate-y-1.5 sm:group-hover:ring-blue-400/20 sm:group-hover:shadow-[0_24px_48px_-20px_rgba(59,130,246,0.45)]">
         <span aria-hidden="true" className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
         <div className="h-full w-full flex flex-col items-center   rounded-3xl">
-          <div className="h-[60%] w-[90%] mt-4 rounded-2xl relative overflow-hidden">
+          <div className="aspect-[16/10] sm:aspect-auto sm:h-[60%] w-[90%] mt-4 rounded-2xl relative overflow-hidden">
             <SafeImg
               src={image}
               alt={`${name} screenshot`}
@@ -23,7 +23,7 @@ const Card = ({ image, name, description, link }) => {
               fallback={<ImagePlaceholder name={name} />}
             />
           </div>
-          <div className="flex w-[90%] flex-col justify-start  mt-2 md:mt-3">
+          <div className="flex w-[90%] flex-col justify-start  mt-3">
             <div className="flex justify-between items-start gap-2">
               <h3 className="text-white text-[1.3rem] font-bold truncate">{name}</h3>
 
@@ -44,7 +44,8 @@ const Card = ({ image, name, description, link }) => {
               )}
             </div>
 
-            <p className="text-slate-300 text-[13px] leading-[15px] md:text-[16px] md:leading-[18px] line-clamp-3">
+            {/* Reserve 3 lines on phones so carousel slides keep one height. */}
+            <p className="mt-1 sm:mt-0 text-slate-300 text-[14px] leading-[19px] min-h-[57px] sm:min-h-0 sm:text-[13px] sm:leading-[15px] md:text-[16px] md:leading-[18px] line-clamp-3">
               {description}
             </p>
           </div>

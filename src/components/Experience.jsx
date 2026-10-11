@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 
 import { useSiteContent } from "../context/ContentContext";
 import { Reveal } from "./Motion";
@@ -30,19 +29,12 @@ const monogram = (company) =>
 const isCurrent = (period) => /present|current|now/i.test(period || "");
 
 // Slowly drifting colour behind the cards, so the glass has something to
-// refract. Frozen for reduced-motion visitors via <MotionConfig>.
+// refract. CSS-only; it holds still on phones (moving light under blurred
+// glass is costly on mobile GPUs) and for reduced-motion visitors.
 const AmbientLight = () => (
   <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-    <motion.div
-      className="absolute left-[4%] top-[18%] h-72 w-72 md:h-96 md:w-96 rounded-full bg-blue-600/20 blur-[110px]"
-      animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
-      transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-    />
-    <motion.div
-      className="absolute right-[8%] bottom-[8%] h-72 w-72 md:h-[26rem] md:w-[26rem] rounded-full bg-purple-600/15 blur-[120px]"
-      animate={{ x: [0, -50, 0], y: [0, 30, 0] }}
-      transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-    />
+    <div className="absolute left-[4%] top-[18%] h-72 w-72 md:h-96 md:w-96 rounded-full bg-blue-600/20 blur-[110px] md:motion-safe:animate-drift" />
+    <div className="absolute right-[8%] bottom-[8%] h-72 w-72 md:h-[26rem] md:w-[26rem] rounded-full bg-purple-600/15 blur-[120px] md:motion-safe:animate-drift-reverse" />
   </div>
 );
 
@@ -67,17 +59,17 @@ const Experience = () => {
   if (!loading && experience.length === 0) return null;
 
   return (
-    <section className="relative isolate py-12 md:py-14 flex flex-col items-center">
+    <section className="relative isolate py-8 md:py-14 flex flex-col items-center">
       <AmbientLight />
 
-      <Reveal className="w-[90%] mb-8 md:mb-10 flex justify-center md:justify-start">
-        <h2 className="text-[1.6rem] md:text-[2.2rem] text-blue-400 font-bold font-bricolage">
+      <Reveal className="w-full px-5 sm:px-8 md:px-0 md:w-[90%] mb-6 md:mb-10 flex justify-center md:justify-start">
+        <h2 className="heading-gradient text-[1.75rem] md:text-[2.2rem] font-bold font-bricolage">
           My Experience
         </h2>
       </Reveal>
 
       {/* Same left edge as the heading; capped width keeps lines readable. */}
-      <div className="w-[calc(100%_-_2.5rem)] md:w-[90%] ml-5 md:ml-0">
+      <div className="w-full px-5 sm:px-8 md:px-0 md:w-[90%]">
         <div className="relative max-w-5xl md:ml-2">
           {/* Timeline line: green at the newest role, fading out at the end. */}
           <span

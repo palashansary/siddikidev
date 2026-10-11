@@ -18,9 +18,9 @@ export const SkeletonText = ({ lines = 3, lineClassName = "h-4", gapClassName = 
 
 // Same footprint as <Card />.
 export const ProjectCardSkeleton = () => (
-  <div aria-hidden="true" className="h-[300px] w-[340px] max-w-[calc(100vw_-_2rem)] sm:h-[350px] sm:w-[440px] bg-gradient-to-r from-slate-700/60 to-slate-800/60 rounded-3xl">
+  <div aria-hidden="true" className="w-full pb-5 sm:pb-0 sm:h-[350px] sm:w-[440px] bg-gradient-to-r from-slate-700/60 to-slate-800/60 rounded-3xl">
     <div className="h-full w-full flex flex-col items-center">
-      <Bone className="h-[60%] w-[90%] mt-4 !rounded-2xl" />
+      <Bone className="aspect-[16/10] sm:aspect-auto sm:h-[60%] w-[90%] mt-4 !rounded-2xl" />
       <div className="flex w-[90%] flex-col gap-2 mt-3">
         <div className="flex justify-between items-center">
           <Bone className="h-6 w-1/2" />

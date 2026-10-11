@@ -14,17 +14,18 @@ const Footer = () => {
 
   return (
     <footer>
-      <div className=" h-full md:h-[160px] border-t border-blue-800 bg-black/[0.1] ">
-        <Reveal y={16} className="text-left pt-6 pb-4 px-6   md:px-16 h-full flex flex-col   md:flex-row md:justify-between md:items-center">
+      <div className="divider-fade" aria-hidden="true" />
+      <div className=" h-full md:h-[160px] bg-[#0A1926]/40 backdrop-blur-md ">
+        <Reveal y={16} className="text-left pt-6 pb-4 px-5 sm:px-8 md:px-16 h-full flex flex-col   md:flex-row md:justify-between md:items-center">
           <div className="flex flex-col ">
             <div className="h-[35px] md:h-[50px]">
-              <img src={newogo} alt="AHSA logo" loading="lazy" className="h-full " />
+              <img src={newogo} alt="AHSA logo" width={610} height={207} loading="lazy" className="h-full w-auto" />
             </div>
             <div>
               {loading ? (
                 <Bone className="mt-3 h-4 md:h-5 w-56 md:w-[28rem] max-w-[80vw]" />
               ) : (
-                <p className="text-white text-[0.8rem] md:text-[1.2rem] font-semibold  mt-2 w-4/6 lg:w-full ">
+                <p className="text-slate-200 text-[0.8rem] md:text-[1.2rem] font-semibold  mt-2 w-4/6 lg:w-full ">
                   {footer.tagline}
                 </p>
               )}
@@ -59,7 +60,9 @@ const Footer = () => {
                       <SafeImg
                         src={social.icon}
                         alt=""
-                        className="h-full"
+                        width={450}
+                        height={450}
+                        className="h-full w-auto"
                         fallback={
                           <span className="h-full px-3 flex items-center rounded-lg bg-slate-800 text-white text-sm font-semibold">
                             {social.name}
@@ -74,7 +77,7 @@ const Footer = () => {
           )}
         </Reveal>
       </div>
-      <div className="border-t border-blue-900/60 bg-black/[0.1] px-6 md:px-16 py-4 text-[12px] md:text-[13px] text-slate-500 font-opensans">
+      <div className="border-t border-white/[0.05] bg-black/[0.15] px-5 sm:px-8 md:px-16 py-4 text-[12px] md:text-[13px] text-slate-400 font-opensans">
         © {new Date().getFullYear()} {profile.name}. Built with React, Tailwind CSS & Firebase.
       </div>
       <BackToTop />

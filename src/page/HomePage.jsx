@@ -20,7 +20,7 @@ const HomePage = () => {
 
   return (
     <AnimatedPage>
-      <div className=" bg-[#0A1926] relative">
+      <div className="relative">
         <Navbar onClickScroll={scrollToAboutSection} />
         <main>
           <Home onClickScroll={scrollToAboutSection} />

@@ -17,7 +17,8 @@ function validate(form) {
   return errors;
 }
 
-const inputClass = "rounded-lg bg-slate-800 px-5 outline-none focus:ring-2 focus:ring-blue-800";
+const inputClass =
+  "rounded-lg bg-slate-800/60 border border-white/10 px-5 text-slate-100 outline-none transition-colors focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/20";
 
 const Contact = () => {
   const { profile, socials } = useSiteContent().content;
@@ -73,7 +74,7 @@ const Contact = () => {
         </p>
         <Link
           to="/"
-          className="text-slate-100 text-[1.2rem] mt-4 px-4 py-1 border border-white rounded-lg"
+          className="glass-pill text-slate-100 text-[1.2rem] mt-4 px-4 py-1 !border-white/40 rounded-lg transition-colors hover:!bg-white/10"
         >
           Go to home
         </Link>
@@ -90,7 +91,7 @@ const Contact = () => {
           </h1>
         </div>
 
-        <div className="mt-6 md:mt-12 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[38%] p-6 sm:p-8 glass rounded-3xl">
+        <div className="mt-6 md:mt-12 w-[calc(100%_-_2.5rem)] sm:w-[60%] md:w-[50%] lg:w-[38%] p-6 sm:p-8 glass rounded-3xl">
           <form onSubmit={submitHandler} noValidate>
             <div className="flex flex-col gap-y-3 md:gap-y-4 font-spectral">
               <div className="text-slate-300">
@@ -187,7 +188,7 @@ const Contact = () => {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="flex bg-blue-950 justify-center w-[100px] px-2 py-1 rounded-md disabled:opacity-60"
+                className="glass-pill flex !bg-blue-600/25 !border-blue-400/30 justify-center w-[100px] px-2 py-1 rounded-md transition-colors hover:!bg-blue-600/40 disabled:opacity-60"
               >
                 {status === "sending" ? "Sending…" : "Submit"}
               </button>
@@ -195,7 +196,7 @@ const Contact = () => {
           </form>
         </div>
 
-        <p className="mt-6 px-6 text-center text-slate-400 font-spectral">
+        <p className="mt-6 px-5 text-center text-slate-400 font-spectral">
           Prefer email?{" "}
           <a href={`mailto:${profile.email}`} className="text-blue-400 hover:underline">
             {profile.email}

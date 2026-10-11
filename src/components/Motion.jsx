@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { animate, motion, useInView, useReducedMotion } from "framer-motion";
+import { animate, m, useInView, useReducedMotion } from "framer-motion";
 
-// Small, shared animation building blocks. All motion is disabled for
-// visitors who prefer reduced motion (see <MotionConfig> in App.jsx).
+// Small, shared animation building blocks. They use framer-motion's light
+// `m` components (features are loaded once via <LazyMotion> in App.jsx), and
+// all motion is disabled for visitors who prefer reduced motion.
 
 const ease = [0.22, 1, 0.36, 1];
 const viewport = { once: true, amount: 0.15 };
 
 // Fades and rises into place the first time it scrolls into view.
 export const Reveal = ({ as = "div", children, delay = 0, y = 28, x = 0, className, ...rest }) => {
-  const Component = motion[as];
+  const Component = m[as];
   return (
     <Component
       className={className}
@@ -36,7 +37,7 @@ const itemVariants = {
 
 // Parent that reveals its <StaggerItem> children one after another.
 export const StaggerGroup = ({ as = "div", children, stagger = 0.08, className, ...rest }) => {
-  const Component = motion[as];
+  const Component = m[as];
   return (
     <Component
       className={className}
@@ -53,7 +54,7 @@ export const StaggerGroup = ({ as = "div", children, stagger = 0.08, className, 
 };
 
 export const StaggerItem = ({ as = "div", children, className, ...rest }) => {
-  const Component = motion[as];
+  const Component = m[as];
   return (
     <Component className={className} variants={itemVariants} {...rest}>
       {children}
@@ -61,15 +62,15 @@ export const StaggerItem = ({ as = "div", children, className, ...rest }) => {
   );
 };
 
-// Gentle, endless up-and-down drift for illustrations.
-export const Float = ({ children, distance = 12, duration = 6, className }) => (
-  <motion.div
-    className={className}
-    animate={{ y: [0, -distance, 0] }}
-    transition={{ duration, ease: "easeInOut", repeat: Infinity }}
+// Gentle, endless up-and-down drift for illustrations. Pure CSS (see the
+// `float` keyframes in tailwind.config.js), so it runs on the GPU.
+export const Float = ({ children, distance = 12, duration = 6, className = "" }) => (
+  <div
+    className={`${className} motion-safe:animate-float will-change-transform`}
+    style={{ "--float-distance": `-${distance}px`, animationDuration: `${duration}s` }}
   >
     {children}
-  </motion.div>
+  </div>
 );
 
 // Counts the number inside a value like "30%" or "3+" up from zero the first

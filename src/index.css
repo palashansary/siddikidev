@@ -12,6 +12,50 @@
 
 body {
   background-color: #0a1926;
+  color-scheme: dark;
+  /* Crisper light-on-dark text on macOS/iOS. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Faint, fixed ambient light in the brand's blue and purple behind every
+   page, so the navy isn't flat. Painted once (no scroll repaint). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 0% 0%, rgba(59, 130, 246, 0.08), transparent 60%),
+    radial-gradient(50rem 36rem at 100% 45%, rgba(147, 51, 234, 0.06), transparent 60%),
+    radial-gradient(48rem 32rem at 20% 100%, rgba(14, 165, 233, 0.05), transparent 60%);
+}
+
+::selection {
+  background: rgba(34, 197, 94, 0.35);
+  color: #fff;
+}
+
+/* Slim dark scrollbar that matches the navy. */
+html {
+  scrollbar-color: #1e3a5f #0a1926;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a1926;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e3a5f;
+  border: 2px solid #0a1926;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2b5180;
 }
 
 @layer components {
@@ -42,9 +86,47 @@ body {
     );
   }
 
-  /* Small glass chip for pills, tags and compact buttons. */
+  /* Section headings: the site's blue with a gentle shift to sky. */
+  .heading-gradient {
+    @apply w-fit bg-gradient-to-r from-blue-400 to-sky-300 bg-clip-text text-transparent;
+  }
+
+  /* Hairline divider that fades out at both ends. */
+  .divider-fade {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-blue-800/80 to-transparent;
+  }
+
+  /* Small glass chip for pills, tags and compact buttons. No backdrop blur:
+     on chips it's barely visible but costs a lot on phones when there are
+     many of them. */
   .glass-pill {
-    @apply border border-white/10 bg-white/[0.06] backdrop-blur-md;
+    @apply border border-white/10 bg-white/[0.06];
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
   }
+}
+
+/* Phones: the hero fills exactly one screen below the navbar, so the next
+   section doesn't peek in (svh = height with the browser toolbar shown).
+   Tablets keep their content-height side-by-side hero; desktop sets its own
+   height in Home.jsx. */
+@media (max-width: 767px) {
+  .hero-screen {
+    min-height: calc(100vh - 3.5rem);
+    min-height: calc(100svh - 3.5rem);
+  }
+}
+
+/* Hero illustration: fade its top and bottom edges into the background so
+   the image's own rectangle never shows as a hard line. */
+.hero-fade {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 80%, transparent 100%);
+}
+
+/* Project carousel dots: pinned to the very bottom of the slide padding
+   (the dots themselves are rendered in Projects.jsx). */
+.carousel .control-dots {
+  margin: 0;
+  bottom: 0;
+  line-height: 0;
 }

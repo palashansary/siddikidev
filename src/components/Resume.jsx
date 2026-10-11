@@ -16,7 +16,7 @@ const Resume = () => {
   )}&embedded=true`;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6">
+    <div className="min-h-screen text-white flex flex-col items-center p-6">
       <h1 className="text-3xl md:text-4xl font-semibold mb-6 text-center">My Resume</h1>
 
       {loading ? (
@@ -30,16 +30,16 @@ const Resume = () => {
         </div>
       ) : (
         <>
-          <div className="w-full max-w-5xl flex justify-center px-2">
+          <div className="glass w-full max-w-5xl flex justify-center p-2 rounded-2xl">
             <iframe
               src={mobileViewer}
               title="Resume preview"
-              className="md:hidden w-full h-[75vh] rounded-lg border border-gray-700 bg-gray-800"
+              className="md:hidden w-full h-[75vh] rounded-xl border border-white/10 bg-slate-900/60"
             ></iframe>
             <iframe
               src={`${url}#view=FitH`}
               title="Resume preview"
-              className="hidden md:block w-full h-[75vh] rounded-lg border border-gray-700 bg-gray-800"
+              className="hidden md:block w-full h-[75vh] rounded-xl border border-white/10 bg-slate-900/60"
             ></iframe>
           </div>
 
@@ -55,7 +55,7 @@ const Resume = () => {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-gray-500 hover:bg-gray-800 text-white px-6 py-3 rounded-lg text-base md:text-lg transition"
+              className="glass-pill !border-white/30 hover:!bg-white/10 text-white px-6 py-3 rounded-lg text-base md:text-lg transition"
             >
               Open in new tab
             </a>

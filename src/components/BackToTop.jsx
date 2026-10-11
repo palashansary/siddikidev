@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { FaArrowUp } from "react-icons/fa";
 
 // Floating button that appears once you've scrolled a screen or so down.
@@ -16,7 +16,7 @@ const BackToTop = () => {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.button
+        <m.button
           type="button"
           aria-label="Back to top"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -27,7 +27,7 @@ const BackToTop = () => {
           className="glass fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 h-11 w-11 md:h-12 md:w-12 flex items-center justify-center rounded-full !bg-blue-950/40 text-white transition-colors hover:!bg-blue-900/60"
         >
           <FaArrowUp />
-        </motion.button>
+        </m.button>
       )}
     </AnimatePresence>
   );

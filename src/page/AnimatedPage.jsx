@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const animations = {
   initial: { opacity: 0, x: -200 },
@@ -9,7 +9,7 @@ const animations = {
 
 const AnimatedPage = ({ children }) => {
   return (
-    <motion.div
+    <m.div
       variants={animations}
       initial="initial"
       animate="animate"
@@ -17,7 +17,7 @@ const AnimatedPage = ({ children }) => {
       transition={{ ease: "easeInOut", duration: 0.4 }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 };
 
