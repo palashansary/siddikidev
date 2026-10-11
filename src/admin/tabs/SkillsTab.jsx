@@ -1,5 +1,5 @@
 import React from "react";
-import SkillTile from "../../components/SkillTile";
+import SkillTile, { skillGridClass } from "../../components/SkillTile";
 import { itemTemplates } from "../../lib/content";
 import { AssetField, ColorInput, ListEditor, Panel, RangeInput, Select, TextInput } from "../ui";
 
@@ -11,7 +11,7 @@ const variants = [
 const SkillsTab = ({ draft, setSection }) => (
   <div className="space-y-6">
     <Panel title="Preview" description="How the tech stack section looks on the site.">
-      <ul className="flex flex-wrap gap-4">
+      <ul className={`${skillGridClass} !px-0`}>
         {draft.skills.map((skill) => (
           <li key={skill.id}>
             <SkillTile skill={skill} />
@@ -65,7 +65,9 @@ const SkillsTab = ({ draft, setSection }) => (
             </div>
             <div>
               <p className="mb-2 text-xs uppercase tracking-wide text-slate-500">Preview</p>
-              <SkillTile skill={skill} />
+              <div className="w-[120px]">
+                <SkillTile skill={skill} />
+              </div>
             </div>
           </div>
         )}

@@ -1,6 +1,6 @@
 import React from "react";
 
-import SkillTile from "./SkillTile";
+import SkillTile, { skillGridClass } from "./SkillTile";
 import { useSiteContent } from "../context/ContentContext";
 import { LoadingLabel, SkillTileSkeleton } from "./Skeleton";
 
@@ -20,17 +20,14 @@ const Skills = () => {
         </div>
 
         {loading ? (
-          <div
-            className="flex gap-6 md:gap-8 flex-wrap justify-center md:justify-start items-center md:w-[90%] px-4 md:px-0"
-            aria-busy="true"
-          >
+          <div className={skillGridClass} aria-busy="true">
             <LoadingLabel>Loading skills…</LoadingLabel>
             {Array.from({ length: 8 }, (_, index) => (
               <SkillTileSkeleton key={index} />
             ))}
           </div>
         ) : (
-          <ul className="flex gap-6 md:gap-8 flex-wrap justify-center md:justify-start items-center md:w-[90%] px-4 md:px-0">
+          <ul className={skillGridClass}>
             {skills.map((skill) => (
               <li key={skill.id}>
                 <SkillTile skill={skill} />

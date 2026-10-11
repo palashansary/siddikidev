@@ -34,7 +34,7 @@ export const ProjectCardSkeleton = () => (
 
 // Same footprint as <SkillTile />.
 export const SkillTileSkeleton = () => (
-  <Bone className="h-[120px] w-[120px] md:h-[150px] md:w-[150px] !rounded-lg" />
+  <Bone className="aspect-square w-full sm:h-[120px] sm:w-[120px] md:h-[150px] md:w-[150px] !rounded-lg" />
 );
 
 // Screen-reader announcement for a loading region.
