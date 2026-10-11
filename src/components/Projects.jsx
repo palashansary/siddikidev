@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Card from "./Card";
 import { useSiteContent } from "../context/ContentContext";
 import { LoadingLabel, ProjectCardSkeleton, SkeletonText } from "./Skeleton";
+import { Reveal, StaggerGroup, StaggerItem } from "./Motion";
 
 const Projects = ({ onHomePage }) => {
   const { content, loading } = useSiteContent();
@@ -25,7 +26,7 @@ const Projects = ({ onHomePage }) => {
 
   return (
     <section className="h-full py-12 md:py-14 flex flex-col items-center justify-center z-0  overflow-hidden">
-      <div className="mb-8 md:mb-10  flex flex-col items-center md:items-start md:w-[90%]">
+      <Reveal className="mb-8 md:mb-10  flex flex-col items-center md:items-start md:w-[90%]">
         <h2 className="text-[1.6rem] md:text-[2.2rem] text-blue-400 font-bold font-bricolage  flex items-start">
           My Recent Projects
         </h2>
@@ -41,14 +42,14 @@ const Projects = ({ onHomePage }) => {
           {onHomePage && (
             <Link
               to="/projects"
-              className="text-white h-full w-[120px] px-3 py-1 bg-blue-950 mt-4 rounded-md flex justify-between items-center"
+              className="group text-white h-full w-[120px] px-3 py-1 bg-blue-950 mt-4 rounded-md flex justify-between items-center transition-colors duration-300 hover:bg-blue-900"
             >
               <span> see more</span>
-              <FaLongArrowAltRight />
+              <FaLongArrowAltRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           )}
         </div>
-      </div>
+      </Reveal>
 
       {loading && (
         <div className="flex gap-8 flex-wrap justify-center" aria-busy="true">
@@ -86,11 +87,14 @@ const Projects = ({ onHomePage }) => {
       )}
 
       {!loading && (
-        <div
+        <StaggerGroup
+          stagger={0.1}
           className={`${onHomePage ? "hidden sm:flex" : "flex"} gap-8 flex-wrap justify-center`}
         >
-          {cards}
-        </div>
+          {cards.map((card) => (
+            <StaggerItem key={card.key}>{card}</StaggerItem>
+          ))}
+        </StaggerGroup>
       )}
     </section>
   );

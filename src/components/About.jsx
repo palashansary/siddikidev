@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import developer from "../images/developer.webp";
 import { useSiteContent } from "../context/ContentContext";
 import { Bone, LoadingLabel, SkeletonText } from "./Skeleton";
+import { Float, Reveal } from "./Motion";
 
 const About = React.forwardRef((props, ref) => {
   const { content, loading } = useSiteContent();
@@ -12,24 +13,24 @@ const About = React.forwardRef((props, ref) => {
   return (
     <section ref={ref} id="about" className="scroll-mt-14">
       <div className="border-t border-blue-900 pt-10 md:pt-12">
-        <div className="text-center mt-4 flex justify-center">
+        <Reveal className="text-center mt-4 flex justify-center">
           <h2 className=" text-[1.8rem] md:text-[2.2rem] font-bold font-spectral text-white border-b-[2px] lg:border-b-[3px] border-emerald-500 rounded-sm">
             About <span className="text-green-500">Me</span>
           </h2>
-        </div>
+        </Reveal>
         <div className="py-2 md:py-8 flex flex-col lg:flex-row justify-center ">
-          <div className="flex justify-center  ">
-            <div className="w-[360px] sm:w-[400px] md:w-[500px] max-w-[calc(100vw_-_2rem)]">
+          <Reveal x={-40} y={0} className="flex justify-center  ">
+            <Float distance={10} duration={7} className="w-[360px] sm:w-[400px] md:w-[500px] max-w-[calc(100vw_-_2rem)]">
               <img
                 src={developer}
                 alt="3D illustration of a developer coding on a laptop"
                 loading="lazy"
                 className="h-full w-full"
               />
-            </div>
-          </div>
+            </Float>
+          </Reveal>
           <div className="flex justify-center items-start">
-            <div className="flex flex-col items-center md:mt-16">
+            <Reveal x={40} y={0} delay={0.1} className="flex flex-col items-center md:mt-16">
               {loading ? (
                 <div className="w-[80vw] lg:w-[40vw] max-w-[44rem]" aria-busy="true">
                   <LoadingLabel />
@@ -59,7 +60,7 @@ const About = React.forwardRef((props, ref) => {
                   </button>
                 </div>
               )}
-            </div>
+            </Reveal>
           </div>
         </div>
       </div>

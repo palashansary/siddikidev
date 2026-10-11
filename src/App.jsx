@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { MotionConfig } from "framer-motion";
 
 import HomePage from "./page/HomePage";
 import ContentProvider from "./context/ContentProvider";
@@ -22,23 +23,26 @@ const App = () => {
   return (
     <div className="bg-[#0A1926] overflow-x-clip">
       <ErrorBoundary>
-        <ContentProvider>
-          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-            <ScrollToTop />
-            <Suspense fallback={<PageFallback />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/projects" element={<ProjectPage />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/blog/:slug" element={<BlogPostPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/resume" element={<ResumePage />} />
-                <Route path="/admin/*" element={<AdminApp />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
-        </ContentProvider>
+        {/* Skip movement for visitors who ask their OS for reduced motion. */}
+        <MotionConfig reducedMotion="user">
+          <ContentProvider>
+            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+              <ScrollToTop />
+              <Suspense fallback={<PageFallback />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/projects" element={<ProjectPage />} />
+                  <Route path="/blog" element={<BlogPage />} />
+                  <Route path="/blog/:slug" element={<BlogPostPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                  <Route path="/resume" element={<ResumePage />} />
+                  <Route path="/admin/*" element={<AdminApp />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </ContentProvider>
+        </MotionConfig>
       </ErrorBoundary>
     </div>
   );

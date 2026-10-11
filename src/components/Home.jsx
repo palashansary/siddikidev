@@ -1,9 +1,18 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 import hero2 from "../images/hero2.webp";
 import SmartLink from "./SmartLink";
 import { useSiteContent } from "../context/ContentContext";
 import { Bone, LoadingLabel, SkeletonText } from "./Skeleton";
+import { Float } from "./Motion";
+
+// Hero copy rises in line by line on load.
+const enter = (delay) => ({
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay },
+});
 
 const Home = ({ onClickScroll }) => {
   const { content, loading } = useSiteContent();
@@ -27,9 +36,12 @@ const Home = ({ onClickScroll }) => {
                   />
                 </div>
               ) : (
-                <h1 className="text-[1.8rem] sm:text-[2.2rem] md:text-[2rem] lg:text-[3.4rem] text-center md:text-left md:leading-[2.8rem] lg:leading-[3.5rem] font-bold px-5 mt-2 md:mt-0 font-roboto ">
+                <motion.h1
+                  {...enter(0.1)}
+                  className="text-[1.8rem] sm:text-[2.2rem] md:text-[2rem] lg:text-[3.4rem] text-center md:text-left md:leading-[2.8rem] lg:leading-[3.5rem] font-bold px-5 mt-2 md:mt-0 font-roboto "
+                >
                   {hero.headline}
-                </h1>
+                </motion.h1>
               )}
             </div>
 
@@ -37,17 +49,23 @@ const Home = ({ onClickScroll }) => {
               {loading ? (
                 <SkeletonText lines={3} lineClassName="h-3" className="px-8 md:px-4 items-center" />
               ) : (
-                <p className="px-8 md:px-4 lg:px-8 text-center text-[14px] leading-[16px] font-opensans">
+                <motion.p
+                  {...enter(0.25)}
+                  className="px-8 md:px-4 lg:px-8 text-center text-[14px] leading-[16px] font-opensans"
+                >
                   {hero.intro}
-                </p>
+                </motion.p>
               )}
             </div>
-            <div className="flex gap-6 justify-center md:justify-start md:px-5 mt-5">
+            <motion.div
+              {...enter(0.35)}
+              className="flex gap-6 justify-center md:justify-start md:px-5 mt-5"
+            >
               {loading && <Bone className="h-[2.1rem] lg:h-[2.4rem] w-[8.5rem] !rounded-lg" />}
               {!loading && hero.ctaUrl && (
                 <SmartLink
                   to={hero.ctaUrl}
-                  className="border px-4 flex items-center text-[16px]  md:text-[14px]  lg:text-[20px]  font-semibold rounded-lg bg-slate-950 font-roboto"
+                  className="border px-4 flex items-center text-[16px]  md:text-[14px]  lg:text-[20px]  font-semibold rounded-lg bg-slate-950 font-roboto transition duration-300 hover:-translate-y-0.5 hover:bg-slate-900 hover:shadow-lg hover:shadow-white/10 active:scale-95"
                 >
                   {hero.ctaLabel || "Get in touch"}
                 </SmartLink>
@@ -55,31 +73,46 @@ const Home = ({ onClickScroll }) => {
 
               <button
                 type="button"
-                className="border px-4  text-[16px] md:text-[20px]  lg:text-[22px]  font-semibold rounded-xl  bg-[#32CD32]  flex items-center font-roboto"
+                className="border px-4  text-[16px] md:text-[20px]  lg:text-[22px]  font-semibold rounded-xl  bg-[#32CD32]  flex items-center font-roboto transition duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#32CD32]/40 active:scale-95"
                 onClick={onClickScroll}
               >
                 <span className="drop-shadow-md">Explore</span>
               </button>
-            </div>
+            </motion.div>
             <div className="md:mt-10 w-full hidden lg:block md:px-5">
               {loading ? (
                 <SkeletonText lines={4} lineClassName="h-4" className="md:mt-6 w-10/12" />
               ) : (
-                <p className="md:mt-6 w-10/12 text-center md:text-left text-[16px] md:text-[16px] md:leading-[18px] xl:text-[18px] xl:leading-[20px]  font-robotomono">
+                <motion.p
+                  {...enter(0.5)}
+                  className="md:mt-6 w-10/12 text-center md:text-left text-[16px] md:text-[16px] md:leading-[18px] xl:text-[18px] xl:leading-[20px]  font-robotomono"
+                >
                   {hero.intro}
-                </p>
+                </motion.p>
               )}
             </div>
           </div>
         </div>
 
-        <div className="md:h-full md:w-[50%] flex justify-center">
-          <img
-            src={hero2}
-            alt="Illustration of a developer working on a laptop under a starry sky"
-            className="h-full object-contain"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="relative md:h-full md:w-[50%] flex justify-center"
+        >
+          {/* Soft glow picked from the illustration's own purple. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-[18%] rounded-full bg-purple-600/25 blur-3xl motion-safe:animate-[pulse_6s_ease-in-out_infinite]"
           />
-        </div>
+          <Float className="relative h-full flex justify-center">
+            <img
+              src={hero2}
+              alt="Illustration of a developer working on a laptop under a starry sky"
+              className="h-full object-contain"
+            />
+          </Float>
+        </motion.div>
       </div>
     </div>
   );

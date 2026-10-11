@@ -5,6 +5,7 @@ import SafeImg from "./SafeImg";
 import SmartLink from "./SmartLink";
 import { useSiteContent } from "../context/ContentContext";
 import { Bone } from "./Skeleton";
+import { Reveal } from "./Motion";
 
 const Footer = () => {
   const { content, loading } = useSiteContent();
@@ -13,7 +14,7 @@ const Footer = () => {
   return (
     <footer>
       <div className=" h-full md:h-[160px] border-t border-blue-800 bg-black/[0.1] ">
-        <div className="text-left pt-6 pb-4 px-6   md:px-16 h-full flex flex-col   md:flex-row md:justify-between md:items-center">
+        <Reveal y={16} className="text-left pt-6 pb-4 px-6   md:px-16 h-full flex flex-col   md:flex-row md:justify-between md:items-center">
           <div className="flex flex-col ">
             <div className="h-[35px] md:h-[50px]">
               <img src={newogo} alt="AHSA logo" loading="lazy" className="h-full " />
@@ -52,7 +53,7 @@ const Footer = () => {
                       to={social.url}
                       aria-label={social.name}
                       title={social.name}
-                      className="block h-full transition-transform duration-300 hover:-translate-y-0.5"
+                      className="block h-full transition-transform duration-300 hover:-translate-y-1 hover:scale-110"
                     >
                       <SafeImg
                         src={social.icon}
@@ -70,7 +71,7 @@ const Footer = () => {
               </ul>
             </div>
           )}
-        </div>
+        </Reveal>
       </div>
     </footer>
   );

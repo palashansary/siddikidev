@@ -3,6 +3,7 @@ import PageLayout from "./PageLayout";
 import BlogCard from "../components/BlogCard";
 import useAsync from "../hooks/useAsync";
 import { fetchPostList } from "../lib/posts";
+import { StaggerGroup, StaggerItem } from "../components/Motion";
 
 const CardSkeleton = () => (
   <div className="w-[340px] max-w-[calc(100vw_-_2rem)] sm:w-[440px] h-[360px] rounded-3xl bg-slate-800/70 motion-safe:animate-pulse" />
@@ -43,11 +44,13 @@ const BlogPage = () => {
         )}
 
         {status === "success" && posts.length > 0 && (
-          <div className="flex gap-8 flex-wrap justify-center">
+          <StaggerGroup stagger={0.1} className="flex gap-8 flex-wrap justify-center">
             {posts.map((post) => (
-              <BlogCard key={post.slug} post={post} />
+              <StaggerItem key={post.slug}>
+                <BlogCard post={post} />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerGroup>
         )}
       </section>
     </PageLayout>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import SafeImg from "./SafeImg";
 
 const Initial = ({ name, className }) => (
@@ -13,7 +13,26 @@ const Initial = ({ name, className }) => (
 export const skillGridClass =
   "grid grid-cols-3 gap-3 w-full max-w-[420px] px-4 sm:flex sm:flex-wrap sm:max-w-none sm:w-auto sm:gap-6 md:gap-8 sm:justify-center md:justify-start sm:items-center md:w-[90%] md:px-0";
 
+const reducedMotion = () =>
+  typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
 const SkillTile = ({ skill }) => {
+  const tileRef = useRef(null);
+
+  // Tilt toward the mouse for a 3D feel. Written straight to the style so
+  // moving the mouse doesn't re-render.
+  const tilt = (event) => {
+    const tile = tileRef.current;
+    if (!tile || event.pointerType !== "mouse" || reducedMotion()) return;
+    const box = tile.getBoundingClientRect();
+    const x = (event.clientX - box.left) / box.width - 0.5;
+    const y = (event.clientY - box.top) / box.height - 0.5;
+    tile.style.transform = `perspective(600px) rotateX(${(-y * 16).toFixed(2)}deg) rotateY(${(x * 16).toFixed(2)}deg) translateY(-4px)`;
+  };
+  const resetTilt = () => {
+    if (tileRef.current) tileRef.current.style.transform = "";
+  };
+
   const background = {
     backgroundImage: `linear-gradient(to right, ${skill.bgFrom}, ${skill.bgTo || skill.bgFrom})`,
   };
@@ -21,8 +40,11 @@ const SkillTile = ({ skill }) => {
 
   return (
     <div
+      ref={tileRef}
       title={skill.name}
-      className="aspect-square w-full sm:h-[120px] sm:w-[120px] md:h-[150px] md:w-[150px] flex justify-center items-center rounded-lg shrink-0 transition-transform duration-300 hover:-translate-y-1"
+      onPointerMove={tilt}
+      onPointerLeave={resetTilt}
+      className="aspect-square w-full sm:h-[120px] sm:w-[120px] md:h-[150px] md:w-[150px] flex justify-center items-center rounded-lg shrink-0 transition-[transform,box-shadow] duration-200 ease-out will-change-transform hover:shadow-[0_18px_36px_-14px_rgba(0,0,0,0.7)]"
       style={background}
     >
       {skill.variant === "framed" ? (
