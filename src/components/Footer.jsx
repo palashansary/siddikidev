@@ -6,10 +6,11 @@ import SmartLink from "./SmartLink";
 import { useSiteContent } from "../context/ContentContext";
 import { Bone } from "./Skeleton";
 import { Reveal } from "./Motion";
+import BackToTop from "./BackToTop";
 
 const Footer = () => {
   const { content, loading } = useSiteContent();
-  const { footer, socials } = content;
+  const { footer, socials, profile } = content;
 
   return (
     <footer>
@@ -73,6 +74,10 @@ const Footer = () => {
           )}
         </Reveal>
       </div>
+      <div className="border-t border-blue-900/60 bg-black/[0.1] px-6 md:px-16 py-4 text-[12px] md:text-[13px] text-slate-500 font-opensans">
+        © {new Date().getFullYear()} {profile.name}. Built with React, Tailwind CSS & Firebase.
+      </div>
+      <BackToTop />
     </footer>
   );
 };

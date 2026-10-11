@@ -1,5 +1,6 @@
 import React from "react";
-import { Panel, TextArea, TextInput } from "../ui";
+import { itemTemplates } from "../../lib/content";
+import { ListEditor, Panel, TextArea, TextInput } from "../ui";
 
 const GeneralTab = ({ draft, setSection }) => {
   const patch = (key) => (changes) => setSection(key, { ...draft[key], ...changes });
@@ -29,6 +30,26 @@ const GeneralTab = ({ draft, setSection }) => {
           rows={9}
           value={about.body}
           onChange={(body) => patch("about")({ body })}
+        />
+      </Panel>
+
+      <Panel
+        title="About numbers"
+        description="Shown under the About text. The number in each value counts up on scroll (e.g. 3+, 30%, 1.5k)."
+      >
+        <ListEditor
+          items={draft.stats}
+          onChange={(stats) => setSection("stats", stats)}
+          template={itemTemplates.stats}
+          idPrefix="stat"
+          addLabel="Add number"
+          itemTitle={(stat) => [stat.value, stat.label].filter(Boolean).join(" · ")}
+          renderFields={(stat, update) => (
+            <div className="grid gap-4 sm:grid-cols-[10rem_1fr]">
+              <TextInput label="Value" placeholder="30%" value={stat.value} onChange={(value) => update({ value })} />
+              <TextInput label="Label" placeholder="Faster load times" value={stat.label} onChange={(label) => update({ label })} />
+            </div>
+          )}
         />
       </Panel>
 

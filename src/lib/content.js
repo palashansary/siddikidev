@@ -7,6 +7,8 @@ export const itemTemplates = {
   projects: { id: "", name: "", image: "", description: "", link: "", showOnHome: true },
   skills: { id: "", name: "", image: "", variant: "framed", bgFrom: "#1e293b", bgTo: "#0f172a", padding: 12 },
   socials: { id: "", name: "", url: "", icon: "" },
+  stats: { id: "", value: "", label: "" },
+  experience: { id: "", role: "", company: "", period: "", highlights: "", tech: "" },
 };
 
 // An item is dropped (rather than rendered half-empty) if this fails.
@@ -14,6 +16,8 @@ const itemIsUsable = {
   projects: (item) => Boolean(item.name),
   skills: (item) => Boolean(item.name || item.image),
   socials: (item) => Boolean(item.url),
+  stats: (item) => Boolean(item.value && item.label),
+  experience: (item) => Boolean(item.role || item.company),
 };
 
 export const isPlainObject = (value) =>

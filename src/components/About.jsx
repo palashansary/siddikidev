@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import developer from "../images/developer.webp";
 import { useSiteContent } from "../context/ContentContext";
 import { Bone, LoadingLabel, SkeletonText } from "./Skeleton";
-import { Float, Reveal } from "./Motion";
+import { CountUp, Float, Reveal, StaggerGroup, StaggerItem } from "./Motion";
 
 const About = React.forwardRef((props, ref) => {
   const { content, loading } = useSiteContent();
-  const { about } = content;
+  const { about, stats } = content;
   const [isVisibleAbout, setIsVisibleAbout] = useState(false);
 
   return (
@@ -58,6 +58,28 @@ const About = React.forwardRef((props, ref) => {
                   >
                     {isVisibleAbout ? "see less" : "see more"}
                   </button>
+
+                  {stats.length > 0 && (
+                    <StaggerGroup
+                      as="dl"
+                      stagger={0.1}
+                      className="glass rounded-2xl mt-6 md:mt-8 p-4 md:p-5 grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-5"
+                    >
+                      {stats.map((stat) => (
+                        <StaggerItem key={stat.id} className="flex flex-col-reverse">
+                          <dt className="mt-1 text-slate-300 text-[12px] leading-[16px] md:text-[14px] md:leading-[18px]">
+                            {stat.label}
+                          </dt>
+                          <dd>
+                            <CountUp
+                              value={stat.value}
+                              className="text-green-500 text-[1.7rem] md:text-[2.1rem] leading-none font-bold"
+                            />
+                          </dd>
+                        </StaggerItem>
+                      ))}
+                    </StaggerGroup>
+                  )}
                 </div>
               )}
             </Reveal>

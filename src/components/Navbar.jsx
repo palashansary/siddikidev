@@ -82,8 +82,10 @@ const Navbar = ({ onClickScroll }) => {
   return (
     <header className="h-14 sticky top-0 left-0 z-50">
       <nav
-        className={`text-white w-full h-14 backdrop-blur-lg flex items-center justify-between  p-5 md:px-14 md:py-9 transition-shadow duration-300 ${
-          scrolled ? "shadow-lg shadow-black/30" : ""
+        className={`text-white w-full h-14 backdrop-blur-xl backdrop-saturate-150 border-b flex items-center justify-between  p-5 md:px-14 md:py-9 transition-[background-color,box-shadow,border-color] duration-300 ${
+          scrolled
+            ? "bg-[#0A1926]/70 border-white/[0.07] shadow-[inset_0_-1px_0_rgba(255,255,255,0.04),0_10px_30px_-12px_rgba(0,0,0,0.6)]"
+            : "bg-[#0A1926]/30 border-transparent"
         }`}
       >
         <div className="h-14 flex items-center">
@@ -127,7 +129,7 @@ const Navbar = ({ onClickScroll }) => {
             <Link
               to="/resume"
               aria-label="Resume"
-              className="flex gap-2 items-center cursor-pointer  sm:border h-9 sm:px-2 sm:py-0 sm:rounded-lg sm:bg-black/[0.6] pr-6 sm:pr-2  sm:hover:scale-95 duration-300 "
+              className="flex gap-2 items-center cursor-pointer  sm:border sm:border-white/25 h-9 sm:px-2 sm:py-0 sm:rounded-lg sm:bg-white/[0.06] sm:backdrop-blur-md sm:shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] pr-6 sm:pr-2  sm:hover:scale-95 sm:hover:bg-white/[0.1] duration-300 "
             >
               <img src={cv} alt="" className=" h-6 md:h-5 " />
               <div className="font-robotomono text-[14px] font-semibold hidden sm:block">
@@ -169,7 +171,7 @@ const Navbar = ({ onClickScroll }) => {
               initial="hidden"
               animate="show"
               exit="exit"
-              className="fixed top-14 inset-x-0 h-[calc(100dvh_-_3.5rem)] bg-black/[0.92] backdrop-blur-xl z-50 sm:hidden"
+              className="fixed top-14 inset-x-0 h-[calc(100dvh_-_3.5rem)] bg-[#0A1926]/80 backdrop-blur-2xl backdrop-saturate-150 border-t border-white/[0.06] z-50 sm:hidden"
             >
               <div className="flex flex-col items-center mt-10 gap-y-10">
                 <ul className="flex flex-col items-center gap-y-4 text-[1.5rem] font-semibold  font-bricolage">
@@ -200,7 +202,7 @@ const Navbar = ({ onClickScroll }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={menuCloseHandler}
-                  className="font-robotomono text-[1rem] px-2 py-1 border rounded-md bg-black/[0.95]"
+                  className="glass-pill font-robotomono text-[1rem] px-3 py-1.5 rounded-lg"
                 >
                   Download CV
                 </motion.a>

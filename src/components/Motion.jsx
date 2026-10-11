@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { animate, motion, useInView, useReducedMotion } from "framer-motion";
 
 // Small, shared animation building blocks. All motion is disabled for
 // visitors who prefer reduced motion (see <MotionConfig> in App.jsx).
@@ -71,3 +71,31 @@ export const Float = ({ children, distance = 12, duration = 6, className }) => (
     {children}
   </motion.div>
 );
+
+// Counts the number inside a value like "30%" or "3+" up from zero the first
+// time it scrolls into view. Values without a number render as-is.
+export const CountUp = ({ value, duration = 1.4, className }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.6 });
+  const reduceMotion = useReducedMotion();
+  const match = /^(\D*)(\d+(?:\.\d+)?)(.*)$/.exec(value || "");
+  const target = match ? Number(match[2]) : 0;
+  const decimals = match?.[2].split(".")[1]?.length || 0;
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!match || !inView) return;
+    if (reduceMotion) return setCurrent(target);
+    const controls = animate(0, target, { duration, ease: "easeOut", onUpdate: setCurrent });
+    return () => controls.stop();
+  }, [inView, target, duration, reduceMotion]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!match) return <span className={className}>{value}</span>;
+  return (
+    <span ref={ref} className={className} aria-label={value}>
+      {match[1]}
+      {current.toFixed(decimals)}
+      {match[3]}
+    </span>
+  );
+};

@@ -12,7 +12,8 @@ const ImagePlaceholder = ({ name }) => (
 const Card = ({ image, name, description, link }) => {
   return (
     <div className="group">
-      <div className="h-[300px] w-[340px] max-w-[calc(100vw_-_2rem)] sm:h-[350px] sm:w-[440px] bg-gradient-to-r from-slate-700 to-slate-800 rounded-3xl z-0 ring-1 ring-white/0 transition duration-300 sm:group-hover:-translate-y-1.5 sm:group-hover:ring-blue-400/20 sm:group-hover:shadow-[0_24px_48px_-20px_rgba(59,130,246,0.45)]">
+      <div className="h-[300px] w-[340px] max-w-[calc(100vw_-_2rem)] sm:h-[350px] sm:w-[440px] relative bg-gradient-to-r from-slate-700 to-slate-800 rounded-3xl z-0 border border-white/[0.06] ring-1 ring-white/0 transition duration-300 sm:group-hover:-translate-y-1.5 sm:group-hover:ring-blue-400/20 sm:group-hover:shadow-[0_24px_48px_-20px_rgba(59,130,246,0.45)]">
+        <span aria-hidden="true" className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
         <div className="h-full w-full flex flex-col items-center   rounded-3xl">
           <div className="h-[60%] w-[90%] mt-4 rounded-2xl relative overflow-hidden">
             <SafeImg

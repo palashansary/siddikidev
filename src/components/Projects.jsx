@@ -42,7 +42,7 @@ const Projects = ({ onHomePage }) => {
           {onHomePage && (
             <Link
               to="/projects"
-              className="group text-white h-full w-[120px] px-3 py-1 bg-blue-950 mt-4 rounded-md flex justify-between items-center transition-colors duration-300 hover:bg-blue-900"
+              className="group glass-pill text-white h-full w-[120px] px-3 py-1 !bg-blue-950/60 !border-blue-400/20 mt-4 rounded-md flex justify-between items-center transition-colors duration-300 hover:!bg-blue-900/70"
             >
               <span> see more</span>
               <FaLongArrowAltRight className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -73,15 +73,23 @@ const Projects = ({ onHomePage }) => {
             key={projects.map((project) => project.id).join()}
             autoPlay={true}
             infiniteLoop={true}
+            stopOnHover={true}
+            swipeable={true}
+            emulateTouch={true}
             showThumbs={false}
             centerMode={true}
             showArrows={false}
             showStatus={false}
-            showIndicators={false}
-            interval={2000}
+            showIndicators={projects.length > 1}
+            interval={4500}
             centerSlidePercentage={100}
           >
-            {cards}
+            {/* Bottom padding leaves room for the indicator dots. */}
+            {cards.map((card) => (
+              <div key={card.key} className="pb-9">
+                {card}
+              </div>
+            ))}
           </Carousel>
         </div>
       )}

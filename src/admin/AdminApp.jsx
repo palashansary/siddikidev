@@ -15,6 +15,7 @@ import { isPlainObject, normalizeContent } from "../lib/content";
 import usePageTitle from "../hooks/usePageTitle";
 
 import GeneralTab from "./tabs/GeneralTab";
+import ExperienceTab from "./tabs/ExperienceTab";
 import ProjectsTab from "./tabs/ProjectsTab";
 import SkillsTab from "./tabs/SkillsTab";
 import ResumeTab from "./tabs/ResumeTab";
@@ -25,6 +26,7 @@ import SettingsTab from "./tabs/SettingsTab";
 
 const tabs = [
   { id: "general", label: "Text & profile", Component: GeneralTab },
+  { id: "experience", label: "Experience", Component: ExperienceTab },
   { id: "projects", label: "Projects", Component: ProjectsTab },
   { id: "skills", label: "Skills", Component: SkillsTab },
   { id: "resume", label: "Resume", Component: ResumeTab },
@@ -41,6 +43,8 @@ const sectionNames = {
   seo: "SEO",
   hero: "Hero",
   about: "About",
+  stats: "About numbers",
+  experience: "Experience",
   projectsSection: "Projects intro",
   projects: "Projects",
   skills: "Skills",
@@ -61,6 +65,8 @@ function findProblem(draft) {
     ["projects", "name", "Project"],
     ["skills", "name", "Skill"],
     ["socials", "url", "Social link"],
+    ["experience", "role", "Experience entry"],
+    ["stats", "value", "About number"],
   ];
   for (const [key, field, label] of required) {
     const index = draft[key].findIndex((item) => !String(item[field] ?? "").trim());

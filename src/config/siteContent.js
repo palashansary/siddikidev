@@ -36,6 +36,36 @@ export const siteContent = {
     body: "I'm Abdul Hai Siddiki Ansary, a Computer Science graduate from the University of Kalyani and a Full Stack Developer with 3 years of experience building fast, reliable web applications. I work across Vue.js, Nuxt.js and React.js on the frontend and Node.js/Express on the backend, and I've shipped production features for enterprise HR SaaS, online gaming and e-commerce products. I care deeply about performance and clean, reusable code: I've cut load times by 30% with code splitting and lazy loading, and built shared component libraries that reduced UI development effort by 25%. Currently at Dokume India, I'm building an enterprise HR management system with multi-tenant access control. Let's turn ideas into captivating realities together!",
   },
 
+  // Numbers shown under the About text; they count up when scrolled into view.
+  stats: [
+    { id: "years", value: "3+", label: "Years of experience" },
+    { id: "load", value: "30%", label: "Faster load times" },
+    { id: "delivery", value: "20%", label: "Faster feature delivery" },
+    { id: "effort", value: "25%", label: "Less UI dev effort" },
+  ],
+
+  // Newest first. `highlights`: one bullet per line. `tech`: comma separated.
+  experience: [
+    {
+      id: "dokume",
+      role: "Full Stack Developer",
+      company: "Dokume India Pvt Ltd",
+      period: "Feb 2026 – Present",
+      highlights:
+        "Building an enterprise HR management system and admin console in Vue.js and React.js on a Node.js/Express backend.\nImplemented multi-tenant RBAC, authentication flows and granular module-level permissions per client.\nDesigned REST APIs on PostgreSQL and MySQL, tuning indexes and slow queries behind high-volume listing and reporting screens.\nBuilt a shared Vue.js/React.js component library used across teams, cutting UI development time by 25%.",
+      tech: "Vue.js, React.js, Node.js, Express, PostgreSQL, MySQL, Docker",
+    },
+    {
+      id: "fple",
+      role: "Full Stack Developer",
+      company: "Fple Technology Pvt Ltd",
+      period: "Nov 2023 – Jan 2026",
+      highlights:
+        "Improved load performance by 30% across production apps with route-level code splitting, lazy loading and Vite build optimization.\nBuilt the player-facing online gaming platform in Vue.js and Pinia, with real-time leaderboards over WebSockets.\nDeveloped an SSR Nuxt.js e-commerce storefront with faceted search, cart and checkout flows.\nAccelerated feature delivery by 20% with reusable components and configured GitHub Actions CI/CD pipelines.",
+      tech: "Vue.js, Nuxt.js, Pinia, Node.js, WebSockets, GraphQL, Tailwind CSS",
+    },
+  ],
+
   projectsSection: {
     intro:
       "The following projects showcase my skills and experience through real-world examples of my work. Each project is briefly described, with a live demo.",

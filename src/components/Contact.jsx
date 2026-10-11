@@ -20,7 +20,8 @@ function validate(form) {
 const inputClass = "rounded-lg bg-slate-800 px-5 outline-none focus:ring-2 focus:ring-blue-800";
 
 const Contact = () => {
-  const { profile } = useSiteContent().content;
+  const { profile, socials } = useSiteContent().content;
+  const linkedin = socials.find((social) => /linkedin\.com/i.test(social.url));
   const [form, setForm] = useState(emptyForm);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [status, setStatus] = useState("idle"); // idle | sending | sent | failed
@@ -89,7 +90,7 @@ const Contact = () => {
           </h1>
         </div>
 
-        <div className="mt-6 md:mt-12 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[38%] p-6 sm:p-8 border border-blue-950 rounded-3xl bg-black/[0.1]">
+        <div className="mt-6 md:mt-12 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[38%] p-6 sm:p-8 glass rounded-3xl">
           <form onSubmit={submitHandler} noValidate>
             <div className="flex flex-col gap-y-3 md:gap-y-4 font-spectral">
               <div className="text-slate-300">
@@ -193,6 +194,21 @@ const Contact = () => {
             </div>
           </form>
         </div>
+
+        <p className="mt-6 px-6 text-center text-slate-400 font-spectral">
+          Prefer email?{" "}
+          <a href={`mailto:${profile.email}`} className="text-blue-400 hover:underline">
+            {profile.email}
+          </a>
+          {linkedin && (
+            <>
+              {" "}· or find me on{" "}
+              <a href={linkedin.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
+                LinkedIn
+              </a>
+            </>
+          )}
+        </p>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import AnimatedPage from "./AnimatedPage";
 import Navbar from "../components/Navbar";
 import About from "../components/About";
+import Experience from "../components/Experience";
 import usePageTitle from "../hooks/usePageTitle";
 
 const HomePage = () => {
@@ -24,6 +25,7 @@ const HomePage = () => {
         <main>
           <Home onClickScroll={scrollToAboutSection} />
           <About ref={aboutSectionRef} />
+          <Experience />
           <Projects onHomePage={true} />
           <Skills />
         </main>

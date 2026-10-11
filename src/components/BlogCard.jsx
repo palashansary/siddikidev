@@ -7,8 +7,9 @@ import { formatDate } from "../lib/posts";
 const BlogCard = ({ post }) => (
   <Link
     to={`/blog/${post.slug}`}
-    className="group block w-[340px] max-w-[calc(100vw_-_2rem)] sm:w-[440px] bg-gradient-to-r from-slate-700 to-slate-800 rounded-3xl p-4 sm:p-5 transition-transform duration-300 hover:-translate-y-1"
+    className="group relative block border border-white/[0.06] w-[340px] max-w-[calc(100vw_-_2rem)] sm:w-[440px] bg-gradient-to-r from-slate-700 to-slate-800 rounded-3xl p-4 sm:p-5 transition-transform duration-300 hover:-translate-y-1"
   >
+    <span aria-hidden="true" className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
     <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden bg-slate-600/60">
       <SafeImg
         src={post.coverImage}

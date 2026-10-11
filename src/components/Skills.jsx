@@ -2,7 +2,7 @@ import React from "react";
 
 import SkillTile, { skillGridClass } from "./SkillTile";
 import { useSiteContent } from "../context/ContentContext";
-import { LoadingLabel, SkillTileSkeleton } from "./Skeleton";
+import { Bone, LoadingLabel, SkillTileSkeleton } from "./Skeleton";
 import { Reveal, StaggerGroup, StaggerItem } from "./Motion";
 
 const Skills = () => {
@@ -24,14 +24,20 @@ const Skills = () => {
           <div className={skillGridClass} aria-busy="true">
             <LoadingLabel>Loading skills…</LoadingLabel>
             {Array.from({ length: 8 }, (_, index) => (
-              <SkillTileSkeleton key={index} />
+              <div key={index} className="flex flex-col items-center">
+                <SkillTileSkeleton />
+                <Bone className="mt-2 h-3 w-2/3" />
+              </div>
             ))}
           </div>
         ) : (
           <StaggerGroup as="ul" stagger={0.04} className={skillGridClass}>
             {skills.map((skill) => (
-              <StaggerItem as="li" key={skill.id}>
+              <StaggerItem as="li" key={skill.id} className="flex flex-col items-center">
                 <SkillTile skill={skill} />
+                <span className="mt-2 w-full truncate text-center text-[11px] sm:text-[13px] md:text-sm text-slate-400 font-bricolage">
+                  {skill.name}
+                </span>
               </StaggerItem>
             ))}
           </StaggerGroup>
