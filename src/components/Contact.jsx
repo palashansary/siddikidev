@@ -1,142 +1,200 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { DATABASE_URL } from "../config/app";
+import { useSiteContent } from "../context/ContentContext";
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const LIMITS = { name: 100, email: 200, phone: 20, message: 5000 };
+const emptyForm = { name: "", email: "", phone: "", message: "", website: "" };
+
+function validate(form) {
+  const errors = {};
+  if (!form.name.trim()) errors.name = "Enter your name";
+  if (!EMAIL_PATTERN.test(form.email.trim())) errors.email = "Enter a valid email";
+  if (form.phone && !/^[+\d][\d\s-]{6,18}$/.test(form.phone.trim()))
+    errors.phone = "Enter a valid number";
+  if (!form.message.trim()) errors.message = "Enter your message";
+  return errors;
+}
+
+const inputClass = "rounded-lg bg-slate-800 px-5 outline-none focus:ring-2 focus:ring-blue-800";
 
 const Contact = () => {
+  const { profile } = useSiteContent().content;
+  const [form, setForm] = useState(emptyForm);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmittedSuccessfully, setIsSubmittedSuccessfully] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | failed
 
-  const [name, setName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [number, setNumber] = useState(null);
-  const [message, setMessage] = useState(null);
+  const errors = validate(form);
+  const showError = (field) => isSubmitted && errors[field];
+
+  const changeHandler = (event) => {
+    const { name, value } = event.target;
+    setForm((current) => ({ ...current, [name]: value.slice(0, LIMITS[name] ?? 200) }));
+  };
 
   const submitHandler = async (event) => {
     event.preventDefault();
-
     setIsSubmitted(true);
+    if (Object.keys(errors).length || status === "sending") return;
 
-    if (!name || !email || !number || !message) return;
+    // Honeypot: real visitors never see or fill the "website" field.
+    if (form.website) {
+      setStatus("sent");
+      return;
+    }
 
-    const data = { name, email, number, message };
-    const response = await fetch(
-      "https://siddikiansary-default-rtdb.firebaseio.com/messages.json",
-      {
+    setStatus("sending");
+    try {
+      const response = await fetch(`${DATABASE_URL}/messages.json`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    if (response.ok) {
-      setIsSubmittedSuccessfully(true);
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          message: form.message.trim(),
+          createdAt: { ".sv": "timestamp" },
+        }),
+      });
+      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+      setStatus("sent");
+    } catch {
+      setStatus("failed");
     }
   };
 
-  return (
-    <>
-      {!isSubmittedSuccessfully && (
-        <div>
-          <div className="h-full flex flex-col items-center py-4">
-            <div className="text-center mt-2">
-              <p className="text-white text-[2rem] md:text-[2.4rem] font-semibold">
-                Let's get connected
-              </p>
-            </div>
+  if (status === "sent") {
+    return (
+      <div className="h-[70vh] flex flex-col items-center justify-center px-6">
+        <p className="text-center text-2xl md:text-3xl text-white">
+          {`Thanks ${form.name.trim()}! I've received your message and will get back to you shortly.`}
+        </p>
+        <Link
+          to="/"
+          className="text-slate-100 text-[1.2rem] mt-4 px-4 py-1 border border-white rounded-lg"
+        >
+          Go to home
+        </Link>
+      </div>
+    );
+  }
 
-            <div className="mt-6 md:mt-12 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[38%] p-8 border border-blue-950 rounded-3xl bg-black/[0.1]">
-              <form>
-                <div className="flex flex-col gap-y-3 md:gap-y-4 font-spectral">
-                  <div className="text-slate-300  ">
-                    <label className="flex flex-col">
-                      Name
-                      <input
-                        type="text"
-                        required
-                        onChange={(event) => setName(event.target.value)}
-                        value={name}
-                        className="h-8 md:h-9 rounded-lg bg-slate-800 px-5 outline-none"
-                      />
-                    </label>
-                    {!name && isSubmitted && (
-                      <span className="text-red-500">Enter your name</span>
-                    )}
-                  </div>
-                  <div className="text-slate-300">
-                    <label className="flex flex-col">
-                      Email
-                      <input
-                        type="email"
-                        required
-                        onChange={(event) => setEmail(event.target.value)}
-                        value={email}
-                        className="h-8 md:h-9 rounded-lg bg-slate-800 px-5 outline-none"
-                      />
-                    </label>
-                    {!email && isSubmitted && (
-                      <span className="text-red-500">Enter your Email</span>
-                    )}
-                  </div>
-                  <div className="text-slate-300">
-                    <label className="flex flex-col">
-                      Number
-                      <input
-                        type="number"
-                        required
-                        onChange={(event) => setNumber(event.target.value)}
-                        value={number}
-                        className="h-8 md:h-9 rounded-lg bg-slate-800 px-5 outline-none"
-                        minLength={10}
-                        maxLength={10}
-                      />
-                    </label>
-                    {!number && isSubmitted && (
-                      <span className="text-red-500">Enter your Number</span>
-                    )}
-                  </div>
-                  <div className="text-slate-300">
-                    <label className="flex flex-col">
-                      Message
-                      <input
-                        type="textarea"
-                        required
-                        onChange={(event) => setMessage(event.target.value)}
-                        value={message}
-                        className="h-24 md:h-28 rounded-lg bg-slate-800 px-5 outline-none"
-                      />
-                    </label>
-                    {!message && isSubmitted && (
-                      <span className="text-red-500">Enter your message</span>
-                    )}
-                  </div>
-                </div>
-                <div className=" flex justify-end text-white mt-2">
-                  <div className="flex bg-blue-950 justify-center w-[100px] px-2 py-1 rounded-md">
-                    <Link>
-                      <button type="button" onClick={submitHandler}>
-                        Submit
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              </form>
+  return (
+    <div>
+      <div className="h-full flex flex-col items-center py-4">
+        <div className="text-center mt-2">
+          <h1 className="text-white text-[2rem] md:text-[2.4rem] font-semibold">
+            Let&apos;s get connected
+          </h1>
+        </div>
+
+        <div className="mt-6 md:mt-12 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[38%] p-6 sm:p-8 border border-blue-950 rounded-3xl bg-black/[0.1]">
+          <form onSubmit={submitHandler} noValidate>
+            <div className="flex flex-col gap-y-3 md:gap-y-4 font-spectral">
+              <div className="text-slate-300">
+                <label className="flex flex-col">
+                  Name
+                  <input
+                    type="text"
+                    name="name"
+                    autoComplete="name"
+                    required
+                    onChange={changeHandler}
+                    value={form.name}
+                    aria-invalid={Boolean(showError("name"))}
+                    className={`h-8 md:h-9 ${inputClass}`}
+                  />
+                </label>
+                {showError("name") && <span className="text-red-500">{errors.name}</span>}
+              </div>
+              <div className="text-slate-300">
+                <label className="flex flex-col">
+                  Email
+                  <input
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    required
+                    onChange={changeHandler}
+                    value={form.email}
+                    aria-invalid={Boolean(showError("email"))}
+                    className={`h-8 md:h-9 ${inputClass}`}
+                  />
+                </label>
+                {showError("email") && <span className="text-red-500">{errors.email}</span>}
+              </div>
+              <div className="text-slate-300">
+                <label className="flex flex-col">
+                  <span>
+                    Number <span className="text-slate-500 text-sm">(optional)</span>
+                  </span>
+                  <input
+                    type="tel"
+                    name="phone"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    onChange={changeHandler}
+                    value={form.phone}
+                    aria-invalid={Boolean(showError("phone"))}
+                    className={`h-8 md:h-9 ${inputClass}`}
+                  />
+                </label>
+                {showError("phone") && <span className="text-red-500">{errors.phone}</span>}
+              </div>
+              <div className="text-slate-300">
+                <label className="flex flex-col">
+                  Message
+                  <textarea
+                    name="message"
+                    required
+                    rows={4}
+                    onChange={changeHandler}
+                    value={form.message}
+                    aria-invalid={Boolean(showError("message"))}
+                    className={`h-24 md:h-28 py-2 resize-y ${inputClass}`}
+                  />
+                </label>
+                {showError("message") && (
+                  <span className="text-red-500">{errors.message}</span>
+                )}
+              </div>
+              <div className="hidden" aria-hidden="true">
+                <label>
+                  Website
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    onChange={changeHandler}
+                    value={form.website}
+                  />
+                </label>
+              </div>
             </div>
-          </div>
+            {status === "failed" && (
+              <p className="text-red-400 mt-3 text-sm" role="alert">
+                Couldn&apos;t send your message. Please try again, or email me at{" "}
+                <a href={`mailto:${profile.email}`} className="underline">
+                  {profile.email}
+                </a>
+                .
+              </p>
+            )}
+            <div className=" flex justify-end text-white mt-2">
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="flex bg-blue-950 justify-center w-[100px] px-2 py-1 rounded-md disabled:opacity-60"
+              >
+                {status === "sending" ? "Sending…" : "Submit"}
+              </button>
+            </div>
+          </form>
         </div>
-      )}
-      {isSubmittedSuccessfully && (
-        <div className="h-[70vh] flex flex-col items-center justify-center">
-          <p className="text-center text-3xl text-white">
-            {`Thanks ${name} Your Submission You will get response back shortly!`}
-          </p>
-          <Link to="/">
-            <button className="text-slate-100 text-[1.2rem] mt-4 px-4 py-1 border border-white rounded-lg">
-              Go to home
-            </button>
-          </Link>
-        </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 

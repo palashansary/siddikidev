@@ -1,58 +1,78 @@
 import React from "react";
 
 import newogo from "../images/newlogo.webp";
+import SafeImg from "./SafeImg";
+import SmartLink from "./SmartLink";
+import { useSiteContent } from "../context/ContentContext";
+import { Bone } from "./Skeleton";
 
-import github from "../images/3d/github.webp";
-import gmail from "../images/3d/gmail.webp";
-import facebook from "../images/3d/facebook.webp";
-import linkedin from "../images/3d/linkedin.webp";
-import { Link } from "react-router-dom";
 const Footer = () => {
+  const { content, loading } = useSiteContent();
+  const { footer, socials } = content;
+
   return (
-    <div>
+    <footer>
       <div className=" h-full md:h-[160px] border-t border-blue-800 bg-black/[0.1] ">
         <div className="text-left pt-6 pb-4 px-6   md:px-16 h-full flex flex-col   md:flex-row md:justify-between md:items-center">
           <div className="flex flex-col ">
             <div className="h-[35px] md:h-[50px]">
-              <img src={newogo} className="h-full " />
+              <img src={newogo} alt="AHSA logo" loading="lazy" className="h-full " />
             </div>
             <div>
-              <p className="text-white text-[0.8rem] md:text-[1.2rem] font-semibold  mt-2 w-4/6 lg:w-full ">
-                Innovating Next-gen web apps that meet the needs of users
-              </p>
+              {loading ? (
+                <Bone className="mt-3 h-4 md:h-5 w-56 md:w-[28rem] max-w-[80vw]" />
+              ) : (
+                <p className="text-white text-[0.8rem] md:text-[1.2rem] font-semibold  mt-2 w-4/6 lg:w-full ">
+                  {footer.tagline}
+                </p>
+              )}
             </div>
           </div>
-          <div className="flex flex-col items-start mt-4 md:mt-0">
-            <div className="pl-1">
-              <p className="text-slate-100 text-[1.1rem] font-semibold font-opensans">
-                Connects with me
-              </p>
-            </div>
-            <div className="mt-3 flex gap-1">
-              <div className="h-[45px] md:h-[60px] cursor-pointer">
-                <a href="https://www.linkedin.com/in/abdul-hai-siddiki-ansary-345433285/">
-                  <img src={linkedin} className="h-full" />
-                </a>
-              </div>
-              <div className="h-[45px] md:h-[60px] cursor-pointer">
-                <a href="mailto:palashansary@gmail.com">
-                  <img src={gmail} className="h-full" />
-                </a>
-              </div>
-              <div className="h-[45px] md:h-[60px] cursor-pointer">
-                <Link to="https://github.com/palashansary">
-                  <img src={github} className="h-full" />
-                </Link>
-              </div>
-
-              <div className="h-[45px] md:h-[60px] cursor-pointer">
-                <img src={facebook} className="h-full" />
+          {loading && (
+            <div className="flex flex-col items-start mt-4 md:mt-0">
+              <Bone className="h-5 w-36" />
+              <div className="mt-3 flex gap-1">
+                {[0, 1, 2].map((index) => (
+                  <Bone key={index} className="h-[45px] w-[45px] md:h-[60px] md:w-[60px] !rounded-xl" />
+                ))}
               </div>
             </div>
-          </div>
+          )}
+          {!loading && socials.length > 0 && (
+            <div className="flex flex-col items-start mt-4 md:mt-0">
+              <div className="pl-1">
+                <p className="text-slate-100 text-[1.1rem] font-semibold font-opensans">
+                  Connect with me
+                </p>
+              </div>
+              <ul className="mt-3 flex gap-1">
+                {socials.map((social) => (
+                  <li key={social.id} className="h-[45px] md:h-[60px]">
+                    <SmartLink
+                      to={social.url}
+                      aria-label={social.name}
+                      title={social.name}
+                      className="block h-full transition-transform duration-300 hover:-translate-y-0.5"
+                    >
+                      <SafeImg
+                        src={social.icon}
+                        alt=""
+                        className="h-full"
+                        fallback={
+                          <span className="h-full px-3 flex items-center rounded-lg bg-slate-800 text-white text-sm font-semibold">
+                            {social.name}
+                          </span>
+                        }
+                      />
+                    </SmartLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

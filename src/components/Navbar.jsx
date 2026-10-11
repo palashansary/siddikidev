@@ -1,181 +1,154 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 import newLogo from "../images/newlogo.webp";
 import cv from "../images/cv.webp";
 
 import { GiHamburgerMenu } from "react-icons/gi";
-
 import { AiOutlineClose } from "react-icons/ai";
-import siddiki_frontend_dev from "../cv/siddiki_frontend_dev.pdf";
-import siddiki_react_latest from "../cv/siddiki_react_dev.pdf"
+import { useSiteContent } from "../context/ContentContext";
+
+const navItems = [
+  { to: "/projects", label: "Projects" },
+  { to: "/blog", label: "Blog" },
+  { to: "/contact", label: "Contact" },
+];
+
+const desktopLinkClass = ({ isActive }) =>
+  isActive ? "text-green-400" : "hover:text-gray-200";
 
 const Navbar = ({ onClickScroll }) => {
   const location = useLocation();
-  const bodyElement = document.querySelector("body");
+  const { resume } = useSiteContent().content;
   const [activeMenu, setActiveMenu] = useState(false);
+  const isHome = location.pathname === "/";
 
-  const menuShowHandler = () => {
-    setActiveMenu(true);
+  // Lock page scroll while the mobile menu is open, and always release it
+  // when the menu closes or this component unmounts (e.g. on navigation).
+  useEffect(() => {
+    if (!activeMenu) return;
+    document.body.classList.add("overflow-hidden");
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [activeMenu]);
 
-    bodyElement.classList.add("overflow-hidden");
-  };
-
-  const menuCloseHandler = () => {
+  useEffect(() => {
     setActiveMenu(false);
-    bodyElement.classList.remove("overflow-hidden");
-  };
+  }, [location.pathname]);
 
-  const cvDownloadHandler = () => {
-    console.log("clicked");
-    const link = document.createElement("a");
-    link.href = siddiki_react_latest;
-    link.download = "siddiki_frontend_dev.pdf";
-    link.click();
+  const menuCloseHandler = () => setActiveMenu(false);
+
+  const scrollToAbout = () => {
+    menuCloseHandler();
+    onClickScroll?.();
   };
 
   return (
-    <div className="h-14 sticky  top-0 left-0 z-50">
-      <div className="text-white w-full h-14 sticky  top-0 left-0  backdrop-blur-lg flex items-center justify-between  p-5 md:px-14 md:py-9 ">
+    <header className="h-14 sticky top-0 left-0 z-50">
+      <nav className="text-white w-full h-14 backdrop-blur-lg flex items-center justify-between  p-5 md:px-14 md:py-9 ">
         <div className="h-14 flex items-center">
           <Link
             to="/"
+            aria-label="Home"
             onClick={() => {
+              menuCloseHandler();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
-            <img src={newLogo} alt="logo" className="h-8 md:h-12 " />
+            <img src={newLogo} alt="AHSA logo" className="h-8 md:h-12 " />
           </Link>
         </div>
 
         <div className="flex gap-8 h-full items-center">
           <div className="hidden sm:flex gap-8 h-full items-center text-[1.12rem] font-semibold font-bricolage ">
-            {location.pathname !== "/" && (
-              <div>
-                <Link to="/">
-                  <p className="hover:text-gray-200">Home</p>
-                </Link>
-              </div>
+            {isHome ? (
+              <button type="button" className="hover:text-gray-200" onClick={scrollToAbout}>
+                About
+              </button>
+            ) : (
+              <Link to="/" className="hover:text-gray-200">
+                Home
+              </Link>
             )}
 
-            {location.pathname === "/" && (
-              <div>
-                <div className="cursor-pointer" onClick={onClickScroll}>
-                  <p className="hover:text-gray-200">About</p>
-                </div>
-              </div>
-            )}
-
-            <div>
-              <Link to="/projects">
-                <p className="hover:text-gray-200">Projects</p>
-              </Link>
-            </div>
-
-            <div>
-              <Link to="/contact">
-                <p className="hover:text-gray-200">Contact</p>
-              </Link>
-            </div>
+            {navItems.map((item) => (
+              <NavLink key={item.to} to={item.to} className={desktopLinkClass}>
+                {item.label}
+              </NavLink>
+            ))}
           </div>
 
           <div className="flex flex-row h-14 justify-center items-center">
             {/* CV ICONS STARTS */}
-            <Link to="/resume"
+            <Link
+              to="/resume"
+              aria-label="Resume"
               className="flex gap-2 items-center cursor-pointer  sm:border h-9 sm:px-2 sm:py-0 sm:rounded-lg sm:bg-black/[0.6] pr-6 sm:pr-2  sm:hover:scale-95 duration-300 "
             >
-              <img src={cv} className=" h-6 md:h-5 " />
+              <img src={cv} alt="" className=" h-6 md:h-5 " />
               <div className="font-robotomono text-[14px] font-semibold hidden sm:block">
                 Resume
               </div>
             </Link>
-
             {/* CV ICONS ENDS  */}
 
-            {/* HAMBURGER MENU STARTS */}
-
-            {!activeMenu && (
-              <div
-                className="cursor-pointer sm:hidden"
-                onClick={menuShowHandler}
-              >
-                <GiHamburgerMenu size="1.6rem" color="" />
-              </div>
-            )}
-
-            {/* HAMBURGER MENU ENDS  */}
-
-            {/* CLOSE ICON STARTS  */}
-
-            {activeMenu && (
-              <div
-                className="cursor-pointer sm:hidden"
-                onClick={menuCloseHandler}
-              >
-                <AiOutlineClose size="1.6rem" color="" />
-              </div>
-            )}
-
-            {/* CLOSE ICON ENDS  */}
+            <button
+              type="button"
+              className="cursor-pointer sm:hidden"
+              aria-label={activeMenu ? "Close menu" : "Open menu"}
+              aria-expanded={activeMenu}
+              onClick={() => setActiveMenu((open) => !open)}
+            >
+              {activeMenu ? (
+                <AiOutlineClose size="1.6rem" />
+              ) : (
+                <GiHamburgerMenu size="1.6rem" />
+              )}
+            </button>
           </div>
         </div>
 
         {/* MOBILE NAVBAR STARTS */}
         {activeMenu && (
-          <div
-            className="fixed top-14 left-0 h-[96.5vh]
-        w-full bg-black/[0.92] backdrop-blur-xl   z-50 "
-          >
-            <div className="flex justify-center mt-10">
+          <div className="fixed top-14 inset-x-0 h-[calc(100dvh_-_3.5rem)] bg-black/[0.92] backdrop-blur-xl z-50 sm:hidden">
+            <div className="flex flex-col items-center mt-10 gap-y-10">
               <ul className="flex flex-col items-center gap-y-4 text-[1.5rem] font-semibold  font-bricolage">
-                {location.pathname !== "/" && (
-                  <li>
+                <li>
+                  {isHome ? (
+                    <button type="button" onClick={scrollToAbout}>
+                      About
+                    </button>
+                  ) : (
                     <Link to="/" onClick={menuCloseHandler}>
                       Home
                     </Link>
-                  </li>
-                )}
-
-                {location.pathname === "/" && (
-                  <li>
-                    <div
-                      onClick={() => {
-                        onClickScroll();
-                        menuCloseHandler();
-                      }}
-                    >
-                      About
-                    </div>
-                  </li>
-                )}
-
-                <li onClick={menuCloseHandler}>
-                  <Link to="/projects">Projects</Link>
+                  )}
                 </li>
-
-                <li onClick={menuCloseHandler}>
-                  <Link to="/contact">Contact</Link>
-                </li>
+                {navItems.map((item) => (
+                  <li key={item.to}>
+                    <Link to={item.to} onClick={menuCloseHandler}>
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
 
-              <div className="absolute top-[34%]">
-                <p
-                  className="font-robotomono text-[1rem] px-2 py-1 border rounded-md bg-black/[0.95]"
-                  onClick={() => {
-                    cvDownloadHandler();
-                    menuCloseHandler();
-                  }}
-                >
-                  Download CV
-                </p>
-              </div>
+              <a
+                href={resume.url}
+                download={resume.fileName || true}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={menuCloseHandler}
+                className="font-robotomono text-[1rem] px-2 py-1 border rounded-md bg-black/[0.95]"
+              >
+                Download CV
+              </a>
             </div>
           </div>
         )}
         {/* MOBILE NAVBAR ENDS */}
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 };
 

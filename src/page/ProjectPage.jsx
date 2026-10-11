@@ -1,23 +1,11 @@
-import React, { useEffect } from "react";
-
+import React from "react";
 import Projects from "../components/Projects";
-import Footer from "../components/Footer";
-import AnimatedPage from "./AnimatedPage";
-import Navbar from "../components/Navbar";
+import PageLayout from "./PageLayout";
 
-const ProjectPage = () => {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-  return (
-    <AnimatedPage>
-      <div className="bg-[#0A1926]">
-        <Navbar />
-        <Projects onHomePage={false} />
-        <Footer />
-      </div>
-    </AnimatedPage>
-  );
-};
+const ProjectPage = () => (
+  <PageLayout title="Projects">
+    <Projects onHomePage={false} />
+  </PageLayout>
+);
 
 export default ProjectPage;

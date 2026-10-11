@@ -1,0 +1,19 @@
+rules_version = '2';
+
+// Only needed if you switch uploads to Firebase Storage (Blaze plan).
+// Deploy with: npx firebase deploy --only storage
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /public/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.auth.token.email == 'palashansary@gmail.com'
+        && request.auth.token.email_verified
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*|application/pdf');
+      allow delete: if request.auth != null
+        && request.auth.token.email == 'palashansary@gmail.com'
+        && request.auth.token.email_verified;
+    }
+  }
+}
